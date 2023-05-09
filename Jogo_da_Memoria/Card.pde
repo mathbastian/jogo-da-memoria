@@ -49,6 +49,10 @@ class Card{
     return this.index;
   }
   
+  public char getValue(){
+    return this.value;
+  }
+  
   private void calculateCoordinates(int index, int listSize){
     x = size*(index%(listSize/3));
     x += 100; //Só para dar espaço
