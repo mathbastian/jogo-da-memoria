@@ -1,5 +1,5 @@
 ArrayList<Card> cards;
-int listSize = 30;
+int listSize = 18;
 int points = 0;
 int lifePoints = 10;
 Card selectedCard;
