@@ -1,9 +1,12 @@
 ArrayList<Card> cards;
 int listSize = 30;
+int points = 0;
+int lifePoints = 10;
+Card selectedCard;
+boolean gameFinished;
 
 void setup(){
   size(1600, 900);
-  
   cards = new ArrayList<Card>();
   ArrayList<Card> valueCards = new ArrayList<Card>();
   Card card;
@@ -27,13 +30,55 @@ void draw(){
   background(220,220,220);
   for (Card card : cards){
     card.print();
-  }  
+  }
+  
+  displayPoints();
 }
 
 void mouseReleased(){
+  if (gameFinished)
+    return;
+  
+  if (isAnyCardShowingTemporarily())
+    return;
+  
   for (Card card : cards){
     if (card.isClickedByMouse()){
-      card.showTemporarily();
+      
+      if (selectedCard == null){
+        card.flip();
+        selectedCard = card;
+      } else if (selectedCard.getValue() == card.getValue() && selectedCard != card){
+        points += 1;
+        selectedCard.flipAndStayInactive();
+        card.flipAndStayInactive();
+        selectedCard = null;
+      } else if (selectedCard.getValue() != card.getValue() && selectedCard != card){
+        lifePoints -= 1;
+        card.showTemporarily();
+        selectedCard.showTemporarily();
+        selectedCard = null;
+      }
+      
     }
   }
+  
+  if (lifePoints == 0 || points == listSize/2)
+    gameFinished = true;
+}
+
+void displayPoints(){
+  int previousFillColor = g.fillColor;
+  fill(0);
+  text("Pontos: " + String.valueOf(points), 40, 40, 280, 320);
+  text("Vida: " + String.valueOf(lifePoints), 40, 80, 280, 320);
+  fill(previousFillColor);
+}
+
+boolean isAnyCardShowingTemporarily(){
+  for (Card card : cards){
+    if (card.isCardShowingTemporarily())
+      return true;
+  }
+  return false;
 }

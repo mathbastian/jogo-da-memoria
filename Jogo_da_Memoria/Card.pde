@@ -7,6 +7,8 @@ class Card{
   private int size = 100;
   private boolean inactive;
   private boolean flipped;
+  private boolean showingTemporarily;
+  private int counterStartTime;
   
   public Card(int index, int listSize, char value){
     this.index = index;
@@ -21,11 +23,21 @@ class Card{
     inactive = true;
   }
   
+  public void flip(){
+    flipped = !flipped;
+  }
+  
   public void showTemporarily(){
-    flipped = true;
+    showingTemporarily = true;
+    counterStartTime = millis();
+    if(!flipped)
+      flip();
   }
   
   public boolean isClickedByMouse(){
+    if (inactive)
+      return false;
+    
     if (mouseX >= x && mouseX <= x+size && 
       mouseY >= y && mouseY <= y+size) {
       return true;
@@ -42,6 +54,14 @@ class Card{
       fill(0);
       text(value, x+size/2, y+size/2);
       fill(previousFillColor);
+    }
+    
+    if (showingTemporarily){
+      int secondsElapsed = ( millis() - counterStartTime ) / 1000;
+      if (secondsElapsed > 3){
+        flip();
+        showingTemporarily = false;
+      } 
     }
   }
   
@@ -62,5 +82,9 @@ class Card{
     } else if (index > (listSize/3*2)){
       y = y * 3;
     }
+  }
+  
+  public boolean isCardShowingTemporarily(){
+    return showingTemporarily;
   }
 }
