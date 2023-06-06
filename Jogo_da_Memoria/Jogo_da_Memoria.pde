@@ -4,26 +4,35 @@ int points = 0;
 int lifePoints = 10;
 Card selectedCard;
 boolean gameFinished;
+StringDict imageDictionary;
 
 void setup(){
   size(1600, 900);
   cards = new ArrayList<Card>();
   ArrayList<Card> valueCards = new ArrayList<Card>();
   Card card;
+  imageDictionary = new StringDict();
   
   //quantidade vai depender da dificuldade
   for (int i = 1; i <= listSize; i++){
     if (i <= listSize/2){  //gerando só para metade e dps randomizar os que foram gerados entre o resto
-      card = new Card(i, listSize, (char) int(random(33, 127)));
+      card = new Card(i, listSize, (char) int(random(33, 127)), imageDictionary);
       cards.add(card);
       valueCards.add(card);
     } else{
       int valueIndex = int(random(0,valueCards.size()/2+1));
-      cards.add(new Card(i, listSize, valueCards.get(valueIndex).getValue()));
+      cards.add(new Card(i, listSize, valueCards.get(valueIndex).getValue(), imageDictionary));
       valueCards.remove(valueIndex);
     }
     println("Card ", cards.get(cards.size()-1).getIndex(), ", valor: ", cards.get(cards.size()-1).getValue());
   }
+  
+  for (Card cardToBeUpdated : cards){
+    if (!imageDictionary.hasKey( String.valueOf(cardToBeUpdated.getValue()) )){
+      imageDictionary.set(String.valueOf(cardToBeUpdated.getValue()), new String("https://picsum.photos/seed/" + String.valueOf(cardToBeUpdated.getIndex()) + "/100"));
+    }
+  }
+  
 }
 
 void draw(){

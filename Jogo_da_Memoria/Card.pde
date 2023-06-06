@@ -9,10 +9,13 @@ class Card{
   private boolean flipped;
   private boolean showingTemporarily;
   private int counterStartTime;
+  private StringDict imageDictionary;
+  PImage image;
   
-  public Card(int index, int listSize, char value){
+  public Card(int index, int listSize, char value, StringDict imageDictionary){
     this.index = index;
     this.value = value;
+    this.imageDictionary = imageDictionary;
     calculateCoordinates(index, listSize);
     inactive = false;
     flipped = false;
@@ -53,6 +56,10 @@ class Card{
     if(flipped){
       fill(0);
       text(value, x+size/2, y+size/2);
+      if(image == null){
+        image = loadImage(imageDictionary.get(String.valueOf(this.value)), "jpg");
+      }
+      image(image,x,y);
       fill(previousFillColor);
     }
     
