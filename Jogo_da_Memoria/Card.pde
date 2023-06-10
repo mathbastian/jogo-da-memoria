@@ -51,6 +51,7 @@ class Card{
   
   public void print(){
     int previousFillColor = g.fillColor;
+    fill(200);
     square(x, y, size);
     
     if(flipped){
