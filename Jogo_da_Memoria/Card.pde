@@ -50,22 +50,20 @@ class Card{
   }
   
   public void print(){
-    int previousFillColor = g.fillColor;
     fill(200);
     square(x, y, size);
     
     if(flipped){
-      fill(0);
-      text(value, x+size/2, y+size/2);
       if(image == null){
         image = loadImage(imageDictionary.get(String.valueOf(this.value)), "jpg");
       }
       image(image,x,y);
-      fill(previousFillColor);
     }
     
     if (showingTemporarily){
-      int secondsElapsed = ( millis() - counterStartTime ) / 1000;
+      int millisecondsElapsed = millis() - counterStartTime;
+      int secondsElapsed = millisecondsElapsed / 1000;
+      tint(255, map(millisecondsElapsed, 0, 3000, 1, 255));
       if (secondsElapsed > 3){
         flip();
         showingTemporarily = false;

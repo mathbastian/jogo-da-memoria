@@ -7,6 +7,7 @@ boolean gameFinished;
 StringDict imageDictionary;
 PImage imgTelaInicial;
 PImage imgTelaFinal;
+PImage imgTelaFinalWin;
 boolean play = false;
 boolean eventoBloqueadoJogo = true;
 boolean eventoBloquadoTelaInicial = false;
@@ -23,6 +24,7 @@ void setup(){
   size(1600, 900);
   imgTelaInicial = loadImage("backGround.jpg");
   imgTelaFinal = loadImage("gameOver.jpg");
+  imgTelaFinalWin = loadImage("gameOverWin.jpg");
 }
 
 void geraCard(){
@@ -70,7 +72,11 @@ void draw(){
     displayPoints();
   } else{
     println("fim chegou");
-    background(imgTelaFinal);
+    if(ganhou){
+      background(imgTelaFinalWin);
+    } else{
+      background(imgTelaFinal);      
+    }
     telaFinal();
   }
   
